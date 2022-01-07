@@ -1,0 +1,34 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block menu %}
+<div class="hero">
+    <div class="header clearfix">
+        {% include 'mainapp/includes/inc_main_menu.html' %}
+    </div>
+    <h1>наши контакты</h1>
+</div>
+{% endblock menu %}
+
+{% block content%}
+<div class="location">
+    {% for addr in addresses %}
+    <div class="location-1">
+        <i class="fa fa-map-marker fa-5x"></i>
+        <h4>{{addr.city}}</h4>
+        <div class="contacts">
+            <h5>Телефон</h5>
+            <p>{{addr.phone}}</p>
+        </div>
+        <div class="contacts">
+            <h5>Email</h5>
+            <p>{{addr.email}}</p>
+        </div>
+        <div class="contacts">
+            <h5>Адрес</h5>
+            <p>{{address}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content%}

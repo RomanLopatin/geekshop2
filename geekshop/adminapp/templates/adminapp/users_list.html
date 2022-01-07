@@ -1,0 +1,32 @@
+{% extends 'adminapp/base.html' %}
+{% load my_tags %}
+
+{% block content%}
+<div class="users_list">
+    <a class="btn btn-primary" style="color: white" href="{% url 'adminapp:user_create' %}">Добавить пользователя</a>
+    {% for item in object_list %}
+    <div class="user_record {% if not item.is_active %}not_active{% endif %}" >
+        <div class="user_avatar">
+<!--            <img src="/media/{{item.avatar|default:'users/product-5-sm.jpg'}}"/>-->
+            <img src="{{ item.avatar|media_for_users }}"/>
+        </div>
+        <div class="user_role">
+            {% if item.is_superuser %}
+            Администратор
+            {% else %}
+            Пользователь
+            {% endif %}
+            <a class="btn btn-info" href="{% url 'adminapp:user_update' item.pk %}">Изменить</a>
+            <br><br>
+            <a class="btn btn-info" href="{% url 'adminapp:user_delete' item.pk %}">Удалить</a>
+        </div>
+        <div class="user_name">
+            <p>{{ item.username }}</p>
+            <p>{{ item.get_full_name }}</p>
+        </div>
+        <div class="user_age"><p>{{item.age}}</p></div>
+        <div class="user_email"><p>{{item.email}}</p></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content%}

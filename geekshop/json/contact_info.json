@@ -1,0 +1,20 @@
+[
+  {
+    "city": "Moscow",
+    "phone": "+79993737",
+    "email": "contact@contact.com",
+    "address": "Inside MKAD"
+  },
+  {
+    "city": "Piter",
+    "phone": "+77773737",
+    "email": "contact@contact.com",
+    "address": "Inside LKAD"
+  },
+  {
+    "city": "Nsk",
+    "phone": "+73333737",
+    "email": "contact@contact.com",
+    "address": "Inside NKAD"
+  }
+]
