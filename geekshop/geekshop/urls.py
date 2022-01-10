@@ -20,9 +20,12 @@ from django.urls import path, include
 
 import mainapp.views as mainapp
 
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', mainapp.index, name="index"),
+
+    path('', include('social_django.urls', namespace='social')),
 
     path('products/', include('mainapp.urls', namespace="products")),
     path('auth/', include('authapp.urls', namespace="authapp")),
