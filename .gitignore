@@ -1,5 +1,3 @@
-/Базовая вёрстка сайта - исходники/
-/venv/
-/authapp/__pycache__
-/mainapp/__pycache__
+/geekshop/venv/
 /geekshop/db.sqlite3
+/geekshop/geekshop/.env

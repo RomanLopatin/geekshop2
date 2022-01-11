@@ -614,13 +614,13 @@ html, body {
 
 .login div.user_avatar {
     position: fixed;
-    left: 175px;
-    top: 200px;
+    left: 50px;
+    top: 50px;
 }
 
 .user_avatar img {
-    width: 300px;
-    border-radius: 25px;
+    width: 200px;
+    border-radius: 5px;
 }
 
 .clr {
