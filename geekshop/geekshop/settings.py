@@ -167,10 +167,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-# SOCIAL_AUTH_VK_OAUTH2_KEY = VK['SOCIAL_AUTH_VK_OAUTH2_KEY']
-# SOCIAL_AUTH_VK_OAUTH2_SECRET = VK['SOCIAL_AUTH_VK_OAUTH2_SECRET']
-
-
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
