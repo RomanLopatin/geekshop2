@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'authapp',
     'adminapp',
     'basketapp',
+    'ordersapp',
     'mainapp',
+
+
 ]
 
 MIDDLEWARE = [
@@ -173,7 +176,6 @@ environ.Env.read_env()
 SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 
-
 API_VERSION = 5.131
 
 SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
@@ -190,4 +192,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
 

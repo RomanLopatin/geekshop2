@@ -6,12 +6,42 @@
            class="{% if request.resolver_match.namespace == 'products' %}active{% endif%}">продукты</a></li>
     <li><a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif%}">контакты</a>
     </li>
+     <!--   //////////////////////////////////////////////////////////////////////////-->
+    {% if user.is_authenticated %}
+    <li>
+        <div class="dropdown">
+            <a class="dropdown-toggle" href="" data-toggle="dropdown">
+                {{ user.first_name|default:'Пользователь' }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'authapp:edit' %}">
+                        профиль
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'ordersapp:list' %}">
+                        заказы
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    {% endif %}
+    {% if user.is_superuser %}
+    <li>
+        <a href="{% url 'adminapp:users' %}">админка</a>
+    </li>
+    {% endif %}
+    <!--   //////////////////////////////////////////////////////////////////////////-->
 
     {% if user.is_authenticated %}
-        {% if user.is_superuser%}
-        <li><a href="{% url 'adminapp:users' %}">Админка</a></li>
-        {% endif %}
-        <li><a href="{% url 'authapp:edit' %}">{{ user.first_name|default:'Пользователь' }}</a></li>
+<!--        {% if user.is_superuser%}-->
+<!--        <li><a href="{% url 'adminapp:users' %}">Админка</a></li>-->
+<!--        {% endif %}-->
+<!--        <li><a href="{% url 'authapp:edit' %}">{{ user.first_name|default:'Пользователь' }}</a></li>-->
+<!--        <li><a href="{% url 'ordersapp:list' %}">Заказы</a></li>-->
         <li><a href="{% url 'authapp:logout' %}">выйти</a></li>
     {% else %}
         <li><a href="{% url 'authapp:register' %}">Регистрация</a></li>
