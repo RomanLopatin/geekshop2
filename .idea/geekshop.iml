@@ -3,7 +3,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/geekshop" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/geekshop/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (geekshop) (3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
