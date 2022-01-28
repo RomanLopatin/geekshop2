@@ -1,5 +1,5 @@
 /venv/
 /geekshop/db.sqlite3
-/geekshop/.env
+/geekshop/geekshop/.env
 */__pycache__/
 /.idea/
