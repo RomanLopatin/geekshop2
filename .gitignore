@@ -2,4 +2,4 @@
 /geekshop/db.sqlite3
 /geekshop/geekshop/.env
 */__pycache__/
-/.idea/
+/geekshop/.idea/
