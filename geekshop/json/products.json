@@ -1,0 +1,5 @@
+[
+  {"category": "офис","name": "p_one", "price": 1},
+  {"category": "дом","name": "p_two", "price": 10},
+  {"category": "модерн","name": "p_three", "price": 15}
+]
