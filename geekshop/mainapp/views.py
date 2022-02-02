@@ -10,7 +10,7 @@ from mainapp.models import Product, ProductCategotry
 
 
 def get_hot_product():
-    products_list = Product.objects.all()
+    products_list = Product.objects.filter(is_active=True, category__is_active=True)
     return random.sample(list(products_list), 1)[0]
 
 
@@ -20,7 +20,7 @@ def get_same_products(hot_product):
 
 
 def index(request):
-    product_list = Product.objects.all()[:4]
+    product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()[:4]
     context = {
         'title': 'магазин',
         'products': product_list,
@@ -40,7 +40,7 @@ def products(request, pk=None, page=1):
             category_item = get_object_or_404(ProductCategotry, pk=pk)
             product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
 
-        paginator = Paginator(product_list, 2)
+        paginator = Paginator(product_list, 3)
         try:
             products_paginator = paginator.page(page)
         except PageNotAnInteger:

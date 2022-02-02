@@ -5,7 +5,10 @@ charset-normalizer==2.0.10
 cryptography==36.0.1
 defusedxml==0.7.1
 Django==4.0.1
+django-debug-toolbar==3.2.4
+django-debug-toolbar-template-profiler==2.0.1
 django-environ==0.8.1
+django-extensions==3.1.5
 environ==1.0
 idna==3.3
 loadenv==0.1.1
@@ -23,3 +26,4 @@ social-auth-core==4.1.0
 sqlparse==0.4.2
 tzdata==2021.5
 urllib3==1.26.8
+wrapt==1.13.3

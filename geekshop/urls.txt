@@ -1,0 +1,10 @@
+http://localhost:8000/
+http://localhost:8000/products/
+http://localhost:8000/products/1
+http://localhost:8000/products/product/1/
+http://localhost:8000/contact/
+http://localhost:8000/auth/edit/
+http://localhost:8000/orders/
+http://localhost:8000/orders/read/38
+http://localhost:8000/orders/update/38
+http://localhost:8000/basket/
