@@ -30,16 +30,19 @@ def index(request):
 
 
 def products(request, pk=None, page=1):
-    links_menu = ProductCategotry.objects.filter(is_active=True)
+    # links_menu = ProductCategotry.objects.filter(is_active=True)
+    links_menu = ProductCategotry.objects.filter(is_active=True).select_related()
     title = 'продукты'
 
     if pk is not None:
         if pk == 0:
-            product_list = Product.objects.filter(is_active=True, category__is_active=True)
+            # product_list = Product.objects.filter(is_active=True, category__is_active=True)
+            product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()
             category_item = {'name': 'все', 'pk': 0}
         else:
             category_item = get_object_or_404(ProductCategotry, pk=pk)
-            product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
+            # product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
+            product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True).select_related()
 
         paginator = Paginator(product_list, 3)
         try:
@@ -98,7 +101,8 @@ def product(request, pk):
 
     content = {
         'title': title,
-        'links_menu': ProductCategotry.objects.filter(is_active=True),
+        # 'links_menu': ProductCategotry.objects.filter(is_active=True),
+        'links_menu': ProductCategotry.objects.filter(is_active=True).select_related(),
         'product': get_object_or_404(Product, pk=pk),
     }
 

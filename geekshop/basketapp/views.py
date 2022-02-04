@@ -10,7 +10,8 @@ from mainapp.models import Product
 @login_required
 def basket(request):
     title = 'корзина'
-    basket_items = Basket.objects.filter(user=request.user)
+    # basket_items = Basket.objects.filter(user=request.user)
+    basket_items = Basket.objects.filter(user=request.user).select_related()
 
     content = {
         'title': title,

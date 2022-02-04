@@ -22,7 +22,8 @@ class OrderListView(ListView):
     model = Order
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_active=True)
+        # return super().get_queryset().filter(is_active=True)
+        return super().get_queryset().filter(is_active=True).select_related()
 
 
 class OrderCreateView(CreateView):
@@ -38,7 +39,8 @@ class OrderCreateView(CreateView):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST)
         else:
-            basket_items = Basket.objects.filter(user=self.request.user)
+            # basket_items = Basket.objects.filter(user=self.request.user)
+            basket_items = Basket.objects.filter(user=self.request.user).select_related()
             if len(basket_items):
                 OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = OrderFormSet()
@@ -62,7 +64,8 @@ class OrderCreateView(CreateView):
             if orderitems.is_valid():
                 orderitems.instance = self.object
                 orderitems.save()
-            basket_items = Basket.objects.filter(user=self.request.user)
+            # basket_items = Basket.objects.filter(user=self.request.user)
+            basket_items = Basket.objects.filter(user=self.request.user).select_related()
             basket_items.delete()
 
         # удаляем пустой заказ
@@ -85,7 +88,9 @@ class OrderUpdateView(UpdateView):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST, instance=self.object)
         else:
-            formset = OrderFormSet(instance=self.object)
+            # formset = OrderFormSet(instance=self.object)
+            queryset = self.object.orderitems.select_related()
+            formset = OrderFormSet(instance=self.object, queryset=queryset)
             for form in formset.forms:
                 if form.instance.pk:
                     form.initial['price'] = form.instance.product.price
