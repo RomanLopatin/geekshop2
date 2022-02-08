@@ -7,6 +7,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from django.views.decorators.cache import cache_page, never_cache
+
 from mainapp import models
 from mainapp.models import Product, ProductCategotry
 
@@ -22,8 +24,8 @@ def get_same_products(hot_product):
 
 
 def index(request):
-    # product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()[:4]
-    product_list = Product.objects.filter(is_active=True, category__is_active=True)[:4]
+    # product_list = Product.objects.filter(is_active=True, category__is_active=True)[:4]
+    product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()[:4]
     context = {
         'title': 'магазин',
         'products': product_list,
@@ -36,29 +38,72 @@ def get_links_menu():
         key = 'links_menu'
         links_menu = cache.get(key)
         if links_menu is None:
-            links_menu = ProductCategotry.objects.filter(is_active=True)
+            links_menu = ProductCategotry.objects.filter(is_active=True).select_related()
             cache.set(key, links_menu)
         return links_menu
     else:
-        return ProductCategotry.objects.filter(is_active=True)
+        return ProductCategotry.objects.filter(is_active=True).select_related()
 
 
+def get_category(pk):
+    if settings.LOW_CACHE:
+        key = f'category_{pk}'
+        category = cache.get(key)
+        if category is None:
+            category = get_object_or_404(ProductCategotry, pk=pk)
+            cache.set(key, category)
+        return category
+    else:
+        return get_object_or_404(ProductCategotry, pk=pk)
+
+
+def get_products():
+    if settings.LOW_CACHE:
+        key = 'products'
+        products = cache.get(key)
+        if products is None:
+            products = Product.objects.filter(is_active=True,
+                                              category__is_active=True).select_related('category')
+            cache.set(key, products)
+        return products
+    else:
+        return Product.objects.filter(is_active=True,
+                                      category__is_active=True).select_related('category')
+
+
+def get_product(pk):
+    if settings.LOW_CACHE:
+        key = f'product_{pk}'
+        product = cache.get(key)
+        if product is None:
+            product = get_object_or_404(Product, pk=pk)
+            cache.set(key, product)
+        return product
+    else:
+        return get_object_or_404(Product, pk=pk)
+
+
+# @cache_page(3600)
+@never_cache
 def products(request, pk=None, page=1):
     # links_menu = ProductCategotry.objects.filter(is_active=True)
     # links_menu = ProductCategotry.objects.filter(is_active=True).select_related()
-    links_menu = get_links_menu().select_related()
+    links_menu = get_links_menu()
     title = 'продукты'
 
     if pk is not None:
         if pk == 0:
             # product_list = Product.objects.filter(is_active=True, category__is_active=True)
-            product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()
+            # product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()
+            product_list = get_products()
             category_item = {'name': 'все', 'pk': 0}
         else:
-            category_item = get_object_or_404(ProductCategotry, pk=pk)
+            # category_item = get_object_or_404(ProductCategotry, pk=pk)
+            category_item = get_category(pk)
             # product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
-            product_list = Product.objects.filter(category__pk=pk, is_active=True,
-                                                  category__is_active=True).select_related()
+            # product_list = Product.objects.filter(category__pk=pk, is_active=True,
+            # category__is_active=True).select_related()
+            product_list = get_products()
 
         paginator = Paginator(product_list, 3)
         try:
@@ -119,8 +164,9 @@ def product(request, pk):
         'title': title,
         # 'links_menu': ProductCategotry.objects.filter(is_active=True),
         # 'links_menu': ProductCategotry.objects.filter(is_active=True).select_related(),
-        'links_menu': get_links_menu().select_related(),
-        'product': get_object_or_404(Product, pk=pk),
+        'links_menu': get_links_menu(),
+        # 'product': get_object_or_404(Product, pk=pk),
+        'product': get_product(pk),
     }
 
     return render(request, 'mainapp/product.html', content)
