@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -9,6 +10,27 @@ from adminapp.forms import ShopUserAdminEditForm, ProductCategoryEditForm, Produ
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategotry, Product
+
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from django.db import connection
+
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x['sql'], queries))
+    print(f'db_profile {type} for {prefix}:')
+    [print(query['sql']) for query in update_queries]
+
+
+@receiver(pre_save, sender=ProductCategotry)
+def product_is_active_update_productcategory_save(sender, instance, **kwargs):
+    if instance.pk:
+        if instance.is_active:
+            instance.product_set.update(is_active=True)
+        else:
+            instance.product_set.update(is_active=False)
+
+        db_profile_by_type(sender, 'UPDATE', connection.queries)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -104,6 +126,7 @@ def categories(request):
 #
 #     return render(request, 'adminapp/category_update.html', content)
 
+
 class ProductCategoryCreateView(CreateView):
     model = ProductCategotry
     template_name = 'adminapp/category_update.html'
@@ -135,6 +158,15 @@ class ProductCategoryUpdateView(UpdateView):
     # fields = __all__
     form_class = ProductCategoryEditForm
     success_url = reverse_lazy('adminapp:categories')
+
+    def form_valid(self, form):
+        if 'discount' in form.cleaned_data:
+            discount = form.cleaned_data['discount']
+            if discount:
+                self.object.product_set.update(price=F('price') * (1 - discount / 100))
+                db_profile_by_type(self.__class__, 'UPDATE', connection.queries)
+
+        return super().form_valid(form)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
