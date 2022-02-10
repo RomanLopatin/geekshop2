@@ -252,7 +252,7 @@ def product_update(request, pk):
 
     edit_product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        edit_form = ProductEditForm(request.POST, instance=edit_product)
+        edit_form = ProductEditForm(request.POST, request.FILES, instance=edit_product)
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('adminapp:product_update', args=[edit_product.pk]))

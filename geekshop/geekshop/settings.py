@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-x)12vl*8ne1!wfbbrl1eiy^_f$gmh0+7!=(*9lrp@6zed1#fo8
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -55,7 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 if DEBUG:
@@ -234,13 +235,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-# ENV_TYPE = os.getenv('ENV_TYPE', 'local')
+ENV_TYPE = os.getenv('ENV_TYPE', 'local')
 # if os.name == 'posix':
-# if ENV_TYPE == 'local':
-CACHE_MIDDLEWARE_ALIAS = 'default'
-# CACHE_MIDDLEWARE_SECONDS = 120
-CACHE_MIDDLEWARE_SECONDS = 60
-CACHE_MIDDLEWARE_KEY_PREFIX = 'geekshop'
+if ENV_TYPE == 'local':
+    CACHE_MIDDLEWARE_ALIAS = 'default'
+    CACHE_MIDDLEWARE_SECONDS = 120
+    CACHE_MIDDLEWARE_KEY_PREFIX = 'geekshop'
 
 CACHES = {
     'default': {
@@ -249,5 +249,5 @@ CACHES = {
     }
 }
 
-LOW_CACHE = True
-# LOW_CACHE = False
+# LOW_CACHE = True
+LOW_CACHE = False
