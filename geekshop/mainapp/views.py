@@ -93,19 +93,17 @@ def products(request, pk=None, page=1):
 
     if pk is not None:
         if pk == 0:
-            # product_list = Product.objects.filter(is_active=True, category__is_active=True)
-            # product_list = Product.objects.filter(is_active=True, category__is_active=True).select_related()
-            product_list = get_products()
-            category_item = {'name': 'все', 'pk': 0}
+            category_item = {
+                'pk': 0,
+                'name': 'все'
+            }
+            product_list = Product.objects.filter(is_active=True, category__is_active=True).order_by('price')
         else:
-            # category_item = get_object_or_404(ProductCategotry, pk=pk)
-            category_item = get_category(pk)
-            # product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True)
-            # product_list = Product.objects.filter(category__pk=pk, is_active=True,
-            # category__is_active=True).select_related()
-            product_list = get_products()
+            category_item = get_object_or_404(ProductCategotry, pk=pk)
+            product_list = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True) \
+                .order_by('price')
 
-        paginator = Paginator(product_list, 3)
+        paginator = Paginator(product_list, 2)
         try:
             products_paginator = paginator.page(page)
         except PageNotAnInteger:

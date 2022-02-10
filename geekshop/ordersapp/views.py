@@ -69,7 +69,7 @@ class OrderCreateView(CreateView):
             basket_items.delete()
 
         # удаляем пустой заказ
-        if self.object.get_total_cost() == 0:
+        if self.object.get_summary()['total_cost'] == 0:
             self.object.delete()
         #
         return super().form_valid(form)
@@ -109,9 +109,9 @@ class OrderUpdateView(UpdateView):
                 orderitems.save()
 
         # удаляем пустой заказ
-        if self.object.get_total_cost() == 0:
+        if self.object.get_summary()['total_cost'] == 0:
             self.object.delete()
-        #
+
         return super().form_valid(form)
 
 
